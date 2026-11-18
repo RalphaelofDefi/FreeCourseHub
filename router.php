@@ -16,6 +16,14 @@ $path = preg_replace('#/+#', '/', $path) ?: '/';
 $relative = trim($path, '/');
 $segments = $relative === '' ? [] : explode('/', $relative);
 
+if ($path === '/health' || $path === '/health/') {
+    http_response_code(200);
+    header('Content-Type: application/json; charset=utf-8');
+    header('Cache-Control: no-store');
+    echo '{"status":"ok"}';
+    exit;
+}
+
 $blockedRoots = [
     'config',
     'database',
