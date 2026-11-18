@@ -1,0 +1,1134 @@
+
+# ============================================================
+# PROJECT: FREECOURSE HUB
+# Automated Udemy Free Course Aggregator
+# Freemium Access + Paystack Payment Integration
+# ============================================================
+
+PROJECT_OVERVIEW="
+Build a complete, functional web application that automatically
+collects, verifies, organizes and publishes free Udemy course
+offers from:
+
+1. https://www.discudemy.com/
+2. https://couponscorpion.com/
+
+The platform allows users to register, browse available courses,
+receive a configurable number of free course unlocks, and pay
+through Paystack to unlock additional course enrollment links.
+
+This must be a fully functional application, not just a frontend
+prototype or static website.
+"
+
+# ============================================================
+# 1. TECHNOLOGY STACK
+# ============================================================
+
+TECHNOLOGY_STACK="
+FRONTEND:
+- HTML5
+- CSS3
+- Bootstrap 5
+- Vanilla JavaScript
+- AJAX / Fetch API
+- Lucide Icons
+
+BACKEND:
+- Raw PHP (NO Laravel or other PHP frameworks)
+- Object-oriented PHP where appropriate
+- PDO for database connections
+- PHP sessions
+- PHP cURL
+- DOMDocument and DOMXPath for permitted HTML extraction
+
+DATABASE:
+- MySQL
+
+PAYMENTS:
+- Paystack API
+- Server-side transaction verification
+- Paystack webhooks
+
+AUTOMATION:
+- PHP CLI scripts
+- Cron-compatible scheduled tasks
+- External scheduler compatibility
+
+CONFIGURATION:
+- .env for credentials and application configuration
+- .env.example for installation guidance
+"
+
+# ============================================================
+# 2. DESIGN AND USER EXPERIENCE
+# ============================================================
+
+DESIGN_REQUIREMENTS="
+Create a modern, premium, professional course discovery platform.
+
+Use a clean design inspired by Udemy, Coursera and other modern
+educational platforms.
+
+SUPPORT BOTH LIGHT AND DARK THEMES.
+
+LIGHT THEME:
+- Background: #F8FAFC
+- Surface: #FFFFFF
+- Primary text: #111827
+- Secondary text: #64748B
+- Accent: #635BFF
+
+DARK THEME:
+- Background: #0B1120
+- Surface: #111827
+- Primary text: #F8FAFC
+- Secondary text: #94A3B8
+- Accent: #818CF8
+
+DESIGN FEATURES:
+- Functional light/dark theme switch.
+- Save the user's theme preference.
+- Fully responsive desktop, tablet and mobile layouts.
+- Modern typography.
+- Consistent spacing.
+- Clean navigation.
+- Attractive course cards.
+- Subtle hover effects and animations.
+- Professional dashboard layouts.
+- Clear loading, empty and error states.
+
+Use CSS variables for the design system.
+Maintain consistent styling across all pages.
+Avoid clutter, excessive gradients and unnecessary animations.
+"
+
+# ============================================================
+# 3. PUBLIC WEBSITE
+# ============================================================
+
+PUBLIC_WEBSITE="
+Create the following pages:
+
+A. HOMEPAGE
+
+Include:
+- Responsive navigation.
+- Website logo and name.
+- Home.
+- Browse Courses.
+- Categories.
+- Search.
+- Login.
+- Register.
+- Theme toggle.
+
+Create an attractive hero section with:
+- Clear headline.
+- Short platform description.
+- Course search bar.
+- Browse Courses button.
+- Register button.
+
+COURSE SECTIONS:
+- Recently Added Courses.
+- Popular Courses.
+- Programming and Development.
+- Business and Entrepreneurship.
+- Design and Creativity.
+- Marketing.
+- IT and Software.
+- Other available categories.
+
+Display only published and available courses.
+
+B. ALL COURSES PAGE
+
+Implement:
+- Course search.
+- Category filters.
+- Level filters.
+- Language filters.
+- Sort by newest.
+- Sort by rating when available.
+- Pagination.
+- Responsive course grid.
+
+C. COURSE DETAILS PAGE
+
+Display:
+- Course title.
+- Thumbnail.
+- Description.
+- Instructor.
+- Category.
+- Rating and reviews when available.
+- Course level.
+- Language.
+- Duration when available.
+- Original price.
+- Coupon price.
+- Source website.
+- Last verification date.
+- Course availability.
+
+Include an Unlock Course button.
+
+D. CATEGORY PAGES
+
+Create dynamic category pages using categories stored in MySQL.
+
+E. AUTHENTICATION PAGES
+
+Create:
+- Registration.
+- Login.
+- Forgot password.
+- Password reset.
+- Logout.
+
+REGISTRATION FIELDS:
+- Full name.
+- Email.
+- Password.
+- Confirm password.
+
+Require users to register and log in before unlocking any course.
+
+Implement:
+- Unique email validation.
+- Password hashing with password_hash().
+- Password verification with password_verify().
+- Secure PHP sessions.
+- Session regeneration after login.
+- CSRF protection.
+- Input validation.
+- Appropriate error messages.
+"
+
+# ============================================================
+# 4. USER DASHBOARD
+# ============================================================
+
+USER_DASHBOARD="
+Every registered user must have a personal dashboard.
+
+OVERVIEW:
+Display:
+- Welcome message.
+- Total courses unlocked.
+- Free unlocks remaining.
+- Total paid unlocks.
+- Recently unlocked courses.
+- Registration date.
+
+MY COURSES:
+Display all unlocked courses with:
+- Thumbnail.
+- Title.
+- Category.
+- Unlock date.
+- Access Course button.
+
+Users must be able to revisit previously unlocked courses
+without paying again.
+
+PAYMENT HISTORY:
+Display:
+- Transaction reference.
+- Course purchased.
+- Amount.
+- Currency.
+- Payment date.
+- Payment status.
+
+ACCOUNT SETTINGS:
+Allow users to:
+- Update full name.
+- Update email securely.
+- Change password.
+- View account details.
+
+FREE ACCESS COUNTER:
+Display a visual progress indicator.
+
+Example:
+Free unlocks remaining: 3 / 5.
+
+Clearly explain when the free allowance has been exhausted.
+"
+
+# ============================================================
+# 5. AUTOMATED COURSE COLLECTION
+# ============================================================
+
+COURSE_SOURCES="
+SOURCE 1:
+https://www.discudemy.com/
+
+SOURCE 2:
+https://couponscorpion.com/
+"
+
+COLLECTION_ENGINE="
+Build a modular course collection engine.
+
+Create separate adapters for both sources:
+
+- DiscUdemyAdapter.php
+- CouponScorpionAdapter.php
+
+The engine must:
+
+1. Retrieve permitted course listing pages.
+2. Identify available course entries.
+3. Extract course information.
+4. Follow permitted course detail pages.
+5. Extract original Udemy URLs.
+6. Extract coupon or enrollment URLs.
+7. Normalize extracted information.
+8. Validate required fields.
+9. Detect duplicates.
+10. Store new courses in MySQL.
+11. Send collected courses for verification.
+
+COLLECT THESE FIELDS WHEN AVAILABLE:
+
+- Course title.
+- Course description.
+- Thumbnail URL.
+- Instructor.
+- Category.
+- Rating.
+- Review count.
+- Student count.
+- Language.
+- Course level.
+- Course duration.
+- Original Udemy price.
+- Coupon price.
+- Original Udemy URL.
+- Coupon URL.
+- Coupon expiry date.
+- Source website.
+- Source listing URL.
+- Discovery date.
+
+Never invent missing information.
+
+IMPORTANT:
+Respect source website terms, robots directives and access
+restrictions.
+
+Use permitted public feeds, APIs or HTML extraction.
+
+Do not bypass:
+- CAPTCHAs.
+- Authentication.
+- Paywalls.
+- Anti-bot protections.
+- HTTP access restrictions.
+
+If a website returns 403, do not attempt to circumvent it.
+Log the failure and allow the other source to continue working.
+"
+
+# ============================================================
+# 6. AUTOMATION AND SCHEDULING
+# ============================================================
+
+AUTOMATION="
+The system must automatically collect courses every SIX HOURS.
+
+Create:
+
+/cron/fetch_courses.php
+/cron/verify_courses.php
+/cron/check_expired_courses.php
+
+The collection process must:
+
+1. Start a collection job.
+2. Check each enabled source.
+3. Fetch available listings.
+4. Extract course information.
+5. Check for duplicates.
+6. Insert new courses.
+7. Update reliable existing metadata.
+8. Submit courses for verification.
+9. Save collection results.
+10. Complete the job.
+
+Implement:
+- Job locking.
+- Overlapping job prevention.
+- Request timeouts.
+- Retry handling.
+- Execution logs.
+- Error logs.
+- Start and completion timestamps.
+- New course counts.
+- Duplicate counts.
+- Failed extraction counts.
+
+Allow administrators to initiate manual collection.
+
+Manual and scheduled collection must use the same engine.
+
+Do not depend on homepage visits to trigger automation.
+
+If native cron is unavailable, support a secure external
+scheduler integration.
+"
+
+# ============================================================
+# 7. COURSE VERIFICATION
+# ============================================================
+
+VERIFICATION="
+Implement an automated course verification engine.
+
+VERIFICATION STATUSES:
+- Pending verification.
+- Verified.
+- Questionable.
+- Expired.
+- Unavailable.
+- Failed verification.
+
+CHECK:
+- Valid Udemy destination.
+- Accessible course page.
+- Accessible coupon destination.
+- Coupon validity.
+- Zero-cost enrollment where verifiable.
+- Required course information.
+- Duplicate records.
+
+AUTOMATIC PUBLISHING:
+
+If all required checks pass:
+- Mark the course verified.
+- Publish automatically.
+- Display it publicly.
+
+QUESTIONABLE COURSES:
+
+If pricing or availability cannot be established reliably:
+- Mark as questionable.
+- Send to admin review.
+- Do not publish automatically.
+
+EXPIRED COURSES:
+
+If a coupon expires or becomes unavailable:
+- Mark the course expired or unavailable.
+- Remove it from active public listings.
+- Preserve its historical record.
+- Preserve user unlock and payment history.
+
+Do not treat HTTP 200 as proof that a course is free.
+
+If zero-price enrollment cannot be established reliably,
+send the course for manual admin review.
+
+Periodically recheck published courses.
+"
+
+# ============================================================
+# 8. DUPLICATE DETECTION
+# ============================================================
+
+DUPLICATE_DETECTION="
+Use normalized canonical Udemy URLs or course identifiers
+as the primary duplicate detection method.
+
+Use normalized course titles as a secondary method.
+
+If the same course appears on both sources:
+- Maintain one primary course record.
+- Record both source associations.
+- Update missing metadata only when reliable.
+- Preserve all source references.
+
+Do not publish duplicate course records.
+"
+
+# ============================================================
+# 9. FREEMIUM AND MONETIZATION SYSTEM
+# ============================================================
+
+MONETIZATION="
+Implement an administrator-controlled freemium and
+pay-per-course access system.
+
+ADMIN CONFIGURATION:
+
+The administrator must control:
+
+- Number of free course unlocks for new users.
+- Price per additional course.
+- Payment currency.
+- Enable or disable free allowances.
+- Enable or disable paid unlocking.
+
+DEFAULT PAYMENT MODEL:
+
+PAY PER COURSE.
+
+Example:
+
+Free unlock allowance = 5
+Price per additional course = NGN 200
+
+A newly registered user receives five free unlocks.
+
+FREE UNLOCK WORKFLOW:
+
+1. User logs in.
+2. User opens a published course.
+3. User clicks Unlock Course.
+4. Backend checks whether the user already unlocked it.
+5. If already unlocked, grant access without charging.
+6. Otherwise, check remaining free allowance.
+7. If free allowance remains, create a free unlock.
+8. Deduct one free unlock.
+9. Record the unlock in MySQL.
+
+PAID UNLOCK WORKFLOW:
+
+When free allowance is exhausted:
+
+1. Display the configured price.
+2. User initiates Paystack payment.
+3. Backend initializes a transaction.
+4. User completes checkout.
+5. Backend verifies the transaction.
+6. Create the course unlock only after successful verification.
+7. Record the transaction and unlock.
+8. Allow permanent repeat access to that course while it remains
+   available.
+
+IMPORTANT RULES:
+
+- Never charge twice for the same course.
+- Never deduct free allowance twice.
+- Never unlock based on frontend messages alone.
+- Use database transactions.
+- Use unique constraints for unlock records.
+- Handle simultaneous unlock requests safely.
+- Maintain a complete unlock audit trail.
+
+CHANGING ADMIN SETTINGS:
+
+Changing the free allowance should affect new registrations
+by default.
+
+Do not automatically reset existing users' balances.
+
+Existing users retain their remaining allowance unless the
+administrator explicitly adjusts it.
+"
+
+# ============================================================
+# 10. PAYSTACK INTEGRATION
+# ============================================================
+
+PAYSTACK="
+Integrate the official Paystack API.
+
+Implement:
+
+- Server-side transaction initialization.
+- Paystack checkout redirect.
+- Server-side transaction verification.
+- Paystack webhook handling.
+- Transaction reference validation.
+- Amount validation.
+- Currency validation.
+- Duplicate transaction protection.
+- Failed payment handling.
+- Cancelled payment handling.
+- Payment history.
+
+PAYMENT WORKFLOW:
+
+1. User clicks Unlock Course.
+2. Backend checks course access eligibility.
+3. Backend retrieves the current course price.
+4. Backend creates a pending payment record.
+5. Backend initializes Paystack checkout.
+6. User completes payment.
+7. Paystack redirects the user.
+8. Backend verifies the transaction independently.
+9. Backend validates reference, amount, currency and status.
+10. Backend creates one course unlock.
+11. User receives access.
+
+Use idempotent payment processing.
+
+Never expose the Paystack secret key in frontend code.
+
+ENVIRONMENT VARIABLES:
+
+PAYSTACK_PUBLIC_KEY=
+PAYSTACK_SECRET_KEY=
+PAYSTACK_CALLBACK_URL=
+
+Use Paystack test keys during localhost development.
+
+The system must not unlock a course just because the user
+visits the payment callback URL.
+
+Verify payment through the official API and validate webhook
+signatures before processing webhook events.
+"
+
+# ============================================================
+# 11. PROTECTED COURSE LINKS
+# ============================================================
+
+COURSE_ACCESS="
+Implement a protected course access endpoint.
+
+Example:
+
+/access-course.php?id=COURSE_ID
+
+Before redirecting to Udemy:
+
+1. Verify user authentication.
+2. Verify course existence.
+3. Verify course availability.
+4. Verify the user's unlock record.
+5. If authorized, redirect to the original enrollment URL.
+6. Otherwise, redirect to the course details page.
+
+Never expose protected enrollment URLs to unauthorized users.
+
+Do not rely on JavaScript button visibility for security.
+
+Enforce access permissions in PHP.
+"
+
+# ============================================================
+# 12. ADMIN DASHBOARD
+# ============================================================
+
+ADMIN_DASHBOARD="
+Create a secure administrator dashboard.
+
+ADMIN OVERVIEW:
+
+Display:
+- Total registered users.
+- Total published courses.
+- Total pending courses.
+- Total verified courses.
+- Total expired courses.
+- Total unlocks.
+- Successful payments.
+- Total revenue.
+- Latest users.
+- Latest collected courses.
+- Recent payment activity.
+- Source collection health.
+
+COURSE MANAGEMENT:
+
+Allow:
+- View all courses.
+- Search courses.
+- Filter by source.
+- Filter by category.
+- Filter by verification status.
+- Approve questionable courses.
+- Reject courses.
+- Edit course details.
+- Publish and unpublish.
+- Mark courses expired.
+- Remove inappropriate records.
+
+VERIFICATION QUEUE:
+
+Display:
+- Course title.
+- Thumbnail.
+- Source.
+- Udemy URL.
+- Coupon URL.
+- Verification results.
+- Reason for review.
+
+Actions:
+- Approve and publish.
+- Reject.
+- Edit before publishing.
+- Recheck verification.
+
+SOURCE MANAGEMENT:
+
+Allow:
+- View configured sources.
+- Enable or disable sources.
+- View last successful collection.
+- View extraction errors.
+- View collected course counts.
+- Trigger manual collection.
+- View source health.
+
+USER MANAGEMENT:
+
+Allow:
+- View users.
+- Search users.
+- View profiles.
+- View remaining free unlocks.
+- View unlocked courses.
+- View payment history.
+- Suspend accounts.
+- Reactivate accounts.
+- Adjust individual allowances.
+
+PAYMENT MANAGEMENT:
+
+Display:
+- User.
+- Course.
+- Transaction reference.
+- Amount.
+- Currency.
+- Provider.
+- Payment date.
+- Payment status.
+
+Support filtering and exporting payment records.
+
+Never allow administrators to falsely mark an unverified
+Paystack transaction as successful.
+"
+
+# ============================================================
+# 13. ADMIN SETTINGS
+# ============================================================
+
+ADMIN_SETTINGS="
+GENERAL:
+- Website name.
+- Website logo.
+- Website description.
+- Contact email.
+- Default currency.
+- Time zone.
+
+MONETIZATION:
+- Free unlock allowance.
+- Course unlock price.
+- Enable/disable free access.
+- Enable/disable paid access.
+- Paystack configuration status.
+
+AUTOMATION:
+- Enable/disable automatic collection.
+- Collection interval.
+- Verification interval.
+- Expiry-check interval.
+- Last execution time.
+
+THEME:
+- Default theme.
+- Allow user theme switching.
+
+Save all settings in MySQL.
+
+Validate settings before saving.
+"
+
+# ============================================================
+# 14. MYSQL DATABASE STRUCTURE
+# ============================================================
+
+DATABASE="
+Create a normalized MySQL database with the following tables:
+
+1. users
+   id, full_name, email, password, role, status,
+   free_unlocks_remaining, created_at, updated_at
+
+2. courses
+   id, title, slug, description, thumbnail_url,
+   instructor, category_id, rating, review_count,
+   language, level, duration, original_price,
+   coupon_price, currency, udemy_url, coupon_url,
+   expiry_date, verification_status, publication_status,
+   verification_notes, last_verified_at, discovered_at,
+   created_at, updated_at
+
+3. categories
+   id, name, slug, description, status, created_at
+
+4. course_sources
+   id, name, base_url, status, last_fetched_at, created_at
+
+5. course_source_links
+   id, course_id, source_id, source_course_url, discovered_at
+
+6. course_unlocks
+   id, user_id, course_id, unlock_type, payment_id, unlocked_at
+
+7. payments
+   id, user_id, course_id, transaction_reference,
+   amount, currency, provider, status, verified_at, created_at
+
+8. system_settings
+   id, setting_key, setting_value, updated_at
+
+9. collection_logs
+   id, source_id, status, discovered_count,
+   new_courses_count, duplicate_count, failed_count,
+   error_message, started_at, completed_at
+
+10. verification_logs
+    id, course_id, verification_status,
+    verification_details, checked_at
+
+11. user_activity_logs
+    id, user_id, activity, details, created_at
+
+12. password_resets
+    id, user_id, token_hash, expires_at, used_at
+
+Add appropriate:
+- Primary keys.
+- Foreign keys.
+- Unique constraints.
+- Database indexes.
+- Decimal monetary columns.
+- Referential integrity.
+- Transaction handling.
+
+Create schema.sql and seed.sql.
+
+Create a secure initial administrator setup process.
+Do not hardcode production administrator passwords.
+"
+
+# ============================================================
+# 15. SECURITY
+# ============================================================
+
+SECURITY="
+Implement:
+
+- Password hashing.
+- PDO prepared statements.
+- CSRF protection.
+- XSS protection.
+- Secure sessions.
+- Session regeneration.
+- Role-based authorization.
+- Protected admin routes.
+- Input validation.
+- Output escaping.
+- Authentication rate limiting.
+- Payment initiation rate limiting.
+- Secure secret management.
+- Server-side payment verification.
+- Duplicate transaction prevention.
+- Safe URL validation.
+- Secure upload handling where applicable.
+
+Never trust:
+- User-submitted prices.
+- Frontend payment status.
+- Unverified course URLs.
+- User-submitted administrative roles.
+
+All sensitive operations must be validated server-side.
+
+Keep .env, private configuration and application logs
+outside publicly accessible paths where possible.
+"
+
+# ============================================================
+# 16. PROJECT DIRECTORY STRUCTURE
+# ============================================================
+
+PROJECT_STRUCTURE="
+/freecourse-hub
+    /admin
+        /assets
+        /includes
+        /pages
+        index.php
+        login.php
+
+    /api
+        /auth
+        /courses
+        /payments
+
+    /assets
+        /css
+        /js
+        /images
+
+    /config
+        database.php
+        app.php
+
+    /cron
+        fetch_courses.php
+        verify_courses.php
+        check_expired_courses.php
+
+    /includes
+        header.php
+        footer.php
+        navbar.php
+        auth.php
+        functions.php
+
+    /modules
+        /sources
+            DiscUdemyAdapter.php
+            CouponScorpionAdapter.php
+        /collection
+        /verification
+        /payments
+
+    /storage
+        /logs
+
+    /database
+        schema.sql
+        seed.sql
+
+    /public
+        index.php
+
+    /vendor
+
+    .env.example
+    .gitignore
+    README.md
+
+Adjust the structure when technically necessary while
+maintaining proper separation of public files, backend code,
+configuration and sensitive information.
+"
+
+# ============================================================
+# 17. LOCALHOST AND DEPLOYMENT
+# ============================================================
+
+DEPLOYMENT="
+FIRST STAGE: LOCALHOST
+
+Build and test the complete application locally.
+
+Requirements:
+- PHP.
+- MySQL.
+- Apache.
+- phpMyAdmin or equivalent.
+- Required PHP extensions.
+- .env configuration.
+- Database installation instructions.
+
+Provide a complete README installation guide.
+
+SECOND STAGE: INFINITYFREE
+
+Prepare the application for InfinityFree deployment.
+
+Check:
+- PHP compatibility.
+- MySQL availability.
+- cURL availability.
+- Outbound HTTP request restrictions.
+- File permissions.
+- URL rewriting.
+- Cron availability.
+
+Do not assume all background automation features are supported.
+
+If native cron is unavailable, provide secure external
+scheduler compatibility.
+
+THIRD STAGE: FUTURE PAID CPANEL HOSTING
+
+Ensure the application can be migrated to another standard
+PHP hosting provider without changing its business logic.
+
+Keep environment configuration separate.
+Provide migration instructions.
+"
+
+# ============================================================
+# 18. LOGGING AND PERFORMANCE
+# ============================================================
+
+RELIABILITY="
+Create centralized logging for:
+
+- Database errors.
+- Authentication failures.
+- Course extraction failures.
+- Source access failures.
+- Verification failures.
+- Payment initialization failures.
+- Payment verification failures.
+- Scheduled job execution.
+- Administrative activities.
+
+Never expose sensitive errors to normal users.
+
+Implement:
+- Database pagination.
+- Efficient SQL queries.
+- Database indexing.
+- Lazy-loaded thumbnails.
+- Appropriate caching.
+- Reusable components.
+- Efficient course search.
+- Safe retry mechanisms.
+- Job locking.
+
+The public website must continue functioning if one
+course source becomes unavailable.
+"
+
+# ============================================================
+# 19. TESTING
+# ============================================================
+
+TESTING="
+Test the complete application.
+
+AUTHENTICATION:
+- Registration.
+- Duplicate email rejection.
+- Login.
+- Logout.
+- Password reset.
+- Protected pages.
+
+COURSE COLLECTION:
+- DiscUdemy adapter.
+- Coupon Scorpion adapter.
+- Missing metadata.
+- Duplicate detection.
+- Source failures.
+- Manual collection.
+- Scheduled collection.
+
+VERIFICATION:
+- Valid free courses.
+- Expired coupons.
+- Uncertain pricing.
+- Unavailable courses.
+- Automatic publication.
+- Admin approval.
+
+MONETIZATION:
+- New user free allowance.
+- Free course unlock.
+- Exhausted free allowance.
+- Paystack test transaction.
+- Failed payment.
+- Cancelled payment.
+- Duplicate callbacks.
+- Server-side payment verification.
+- Incorrect payment amount rejection.
+- Previously unlocked course access.
+
+ADMIN:
+- Admin login.
+- Course management.
+- Verification queue.
+- User management.
+- Pricing configuration.
+- Collection logs.
+- Payment records.
+
+RESPONSIVENESS:
+- Desktop.
+- Tablet.
+- Mobile.
+
+Do not declare a feature complete until its functionality
+has been tested.
+"
+
+# ============================================================
+# 20. FINAL DEVELOPMENT INSTRUCTIONS
+# ============================================================
+
+FINAL_INSTRUCTIONS="
+Build the application in a structured development sequence.
+
+PHASE 1:
+Project initialization, directory structure and database.
+
+PHASE 2:
+Configuration, database connection and authentication.
+
+PHASE 3:
+Frontend design and public website.
+
+PHASE 4:
+User dashboard and course management.
+
+PHASE 5:
+DiscUdemy and Coupon Scorpion source adapters.
+
+PHASE 6:
+Automatic collection and duplicate detection.
+
+PHASE 7:
+Course verification and publishing workflow.
+
+PHASE 8:
+Free access and paid course unlocking.
+
+PHASE 9:
+Paystack payment integration.
+
+PHASE 10:
+Administrator dashboard and settings.
+
+PHASE 11:
+Scheduled automation and logging.
+
+PHASE 12:
+Security, testing and deployment documentation.
+
+IMPORTANT:
+
+- Do not skip any required functionality.
+- Do not replace actual integrations with dummy data.
+- Do not invent course information.
+- Do not publish questionable courses automatically.
+- Do not expose course links without authorization.
+- Do not grant paid access without verified payment.
+- Do not bypass source website restrictions.
+- Do not use Laravel or another backend framework.
+- Keep the system compatible with localhost and standard PHP hosting.
+
+If an existing project is provided, inspect it first and
+preserve useful existing work.
+
+If no project exists, initialize the application.
+
+The final deliverable must be a complete, working,
+secure and deployable Udemy course discovery platform.
+"
+
+# ============================================================
+# END OF PROJECT SPECIFICATION
+# ============================================================
+
+echo "Build FreeCourse Hub according to all requirements above."
+echo "Prioritize actual functionality, security and maintainability."
+echo "Do not substitute working backend features with visual mockups."

@@ -1,0 +1,7 @@
+version = 1
+
+[build]
+language = "php"
+runtimeVersion = "8.3"
+startCommand = "php -S 0.0.0.0:${PORT:-8080} router.php"
+port = 8080

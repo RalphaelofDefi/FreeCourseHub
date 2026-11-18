@@ -1,0 +1,33 @@
+# FreeCourse Hub — Apache configuration
+Options -Indexes
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Never serve environment files or hidden files.
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block internal application directories from direct web access.
+RedirectMatch 404 ^/(config|database|includes|modules|storage|vendor)(/|$)
+
+# Protect SQL dumps regardless of location.
+<FilesMatch "(^composer\.(json|lock)$|\.(sql|lock|log|md|toml)$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

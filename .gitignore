@@ -1,0 +1,12 @@
+.env
+/vendor/
+/storage/cache/*
+/storage/locks/*
+/storage/logs/*
+!/storage/cache/.gitkeep
+!/storage/locks/.gitkeep
+!/storage/logs/.gitkeep
+/storage/installed.lock
+.DS_Store
+Thumbs.db
+*.log
